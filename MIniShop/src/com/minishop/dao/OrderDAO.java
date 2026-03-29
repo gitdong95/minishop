@@ -21,67 +21,83 @@ public class OrderDAO {
 		conn = DriverManager.getConnection(uri, "hr", "hr");
 		System.out.println("conn ok");
 	}
-	// 특정회원 구매내역 조회
+	// 구매내역 조회
 	public List<OrderVO> getOrders(String registerId){
 		List<OrderVO> orders = new ArrayList<>();
 		
-		String sql = "SELECT o.orderlist_id, o.orderlist_date, p.product_name, orderlist_quantity, p.product_price, orderlist_price, orderlist_payment "
-				+ "FROM orderlist o, products p, registers r "
-				+ "WHERE r.register_id = o.register_id AND o.product_id = p.product_id AND r.register_id = ?";
+		String sql = "SELECT o.orderlist_id, o.orderlist_date, p.product_name, orderlist_quantity, p.product_price, orderlist_price, orderlist_payment, a.address "
+				+ "FROM orderlist o, products p, registers r, addresses a "
+				+ "WHERE r.register_id = ? AND o.product_id = p.product_id AND r.register_id = 'chulsoo77' AND o.address_id = a.address_id";
 		
 		try {
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setString(1, registerId);
 			ResultSet rs = stmt.executeQuery();
 			while(rs.next()){
-				orders.add(new OrderVO(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getInt(5), rs.getInt(6), rs.getString(7), registerId));
+				orders.add(new OrderVO(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getInt(5), rs.getInt(6), rs.getString(7), rs.getString(8), registerId));
 			}
+			stmt.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return orders;
 	}
-	public boolean setOrder(int orderlistQuantity, Payment payment, String registerId, int productId){
+	// 단품 주문
+	public boolean setOrder(int orderlistQuantity, Payment payment, String registerId, int productId, int addressId){
 		Payment pay = payment;
 		boolean flag = false;
-		
-		String sql1 = "INSERT INTO orderlist (orderlist_id, orderlist_date, orderlist_quantity, orderlist_price, orderlist_payment, register_id, product_id) "
-				+ "VALUES (orderlist_id_seq.nextval, sysdate, ?, ? * (SELECT product_price FROM products WHERE product_id = ?), ?, ?, ?)";
-		
+		//주문
+		String sql1 = "INSERT INTO orderlist (orderlist_id, orderlist_date, orderlist_quantity, orderlist_price, orderlist_payment, product_id, address_id, register_id) "
+				+ "VALUES (seq_orderlist_id.nextval, SYSDATE, ?, ? * (SELECT product_price FROM products WHERE product_id = ?), ?, ?, ?, ?)";
+		//재고 업데이트
 		String sql2 = "UPDATE products "
 				+ "SET stock = stock - ? "
 				+ "WHERE product_id = ?";
 		try {
-			//검증
-			validateOrder(orderlistQuantity, payment);
-			//주문완료
+			conn.setAutoCommit(false); 
+			// 검증
+			validateOrder(orderlistQuantity, payment, addressId);
 			PreparedStatement stmt = conn.prepareStatement(sql1);
 			stmt.setInt(1, orderlistQuantity);
 			stmt.setInt(2, orderlistQuantity);
 			stmt.setInt(3, productId);
 			stmt.setString(4, pay.pay());
-			stmt.setString(5, registerId);
-			stmt.setInt(6, productId);
+			stmt.setInt(5, productId);
+			stmt.setInt(6, addressId);
+			stmt.setString(7, registerId);
 			if (stmt.executeUpdate() == 1){
-				//재고 업데이트
 				stmt = conn.prepareStatement(sql2);
 				stmt.setInt(1, orderlistQuantity);
 				stmt.setInt(2, productId);
 				flag = (stmt.executeUpdate() == 1);
+			}
+			if (flag) {
+				conn.commit(); // 둘 다 성공 => 최종 반영
+			} else {
+				conn.rollback(); // 하나라도 실패 => 전부 취소
 			}
 			stmt.close();
 		} catch (OrderException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
+		}finally {
+			try {
+				conn.setAutoCommit(true);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		return flag;
 	}
-	public void validateOrder(int orderlistQuantity, Payment payment) throws OrderException{
+	// 검증코드
+	public void validateOrder(int orderlistQuantity, Payment payment, int addressId) throws OrderException{
 		if(orderlistQuantity <= 0)
 			throw new OrderException("수량을 입력해주세요");
 		if(payment == null)
 			throw new OrderException("결제수단을 입력해주세요");
+		if(addressId <= 0)
+			throw new OrderException("배송지를 선택해주세요");
 	}
 	
 	public Connection getConnection(){

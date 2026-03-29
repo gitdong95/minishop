@@ -5,14 +5,10 @@ CREATE TABLE orderlist (
 	orderlist_quantity number(10) NOT NULL, /* 구매수량 */
 	orderlist_price number(10) NOT NULL, /* 구매가격 */
 	orderlist_payment varchar2(20) NOT NULL, /* 결제수단 */
-	register_id varchar2(20) NOT NULL, /* 회원_id */
-	product_id number(10) NOT NULL /* 상품_id */
+	product_id number(10) NOT NULL, /* 상품_id */
+	address_id number(10) NOT NULL, /* 배송지주소_id */
+	register_id varchar2(20) NOT NULL /* 회원_id */
 );
-
-CREATE UNIQUE INDEX PK_orderlist
-	ON orderlist (
-		orderlist_id ASC
-	);
 
 ALTER TABLE orderlist
 	ADD
@@ -30,11 +26,6 @@ CREATE TABLE registers (
 	phone_number varchar2(20) NOT NULL /* 전화번호 */
 );
 
-CREATE UNIQUE INDEX PK_registers
-	ON registers (
-		register_id ASC
-	);
-
 ALTER TABLE registers
 	ADD
 		CONSTRAINT PK_registers
@@ -50,16 +41,45 @@ CREATE TABLE products (
 	stock number(10) /* 재고수량 */
 );
 
-CREATE UNIQUE INDEX PK_products
-	ON products (
-		product_id ASC
-	);
-
 ALTER TABLE products
 	ADD
 		CONSTRAINT PK_products
 		PRIMARY KEY (
 			product_id
+		);
+
+/* 배송지주소 */
+CREATE TABLE addresses (
+	address_id number(10) NOT NULL, /* 배송지주소_id */
+	address varchar(200) NOT NULL, /* 주소 */
+	register_id varchar2(20) NOT NULL /* 회원_id */
+);
+
+ALTER TABLE addresses
+	ADD
+		CONSTRAINT PK_addresses
+		PRIMARY KEY (
+			address_id
+		);
+
+ALTER TABLE orderlist
+	ADD
+		CONSTRAINT FK_products_TO_orderlist
+		FOREIGN KEY (
+			product_id
+		)
+		REFERENCES products (
+			product_id
+		);
+
+ALTER TABLE orderlist
+	ADD
+		CONSTRAINT FK_addresses_TO_orderlist
+		FOREIGN KEY (
+			address_id
+		)
+		REFERENCES addresses (
+			address_id
 		);
 
 ALTER TABLE orderlist
@@ -72,12 +92,12 @@ ALTER TABLE orderlist
 			register_id
 		);
 
-ALTER TABLE orderlist
+ALTER TABLE addresses
 	ADD
-		CONSTRAINT FK_products_TO_orderlist
+		CONSTRAINT FK_registers_TO_addresses
 		FOREIGN KEY (
-			product_id
+			register_id
 		)
-		REFERENCES products (
-			product_id
+		REFERENCES registers (
+			register_id
 		);
