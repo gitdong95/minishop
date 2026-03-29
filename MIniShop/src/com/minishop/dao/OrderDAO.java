@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.minishop.exception.OrderException;
 import com.minishop.vo.OrderVO;
 import com.minishop.vo.Payment;
 
@@ -50,9 +51,9 @@ public class OrderDAO {
 		String sql2 = "UPDATE products "
 				+ "SET stock = stock - ? "
 				+ "WHERE product_id = ?";
-		// 검증코드 필요
-		
 		try {
+			//검증
+			validateOrder(orderlistQuantity, payment);
 			//주문완료
 			PreparedStatement stmt = conn.prepareStatement(sql1);
 			stmt.setInt(1, orderlistQuantity);
@@ -62,16 +63,25 @@ public class OrderDAO {
 			stmt.setString(5, registerId);
 			stmt.setInt(6, productId);
 			if (stmt.executeUpdate() == 1){
+				//재고 업데이트
 				stmt = conn.prepareStatement(sql2);
 				stmt.setInt(1, orderlistQuantity);
 				stmt.setInt(2, productId);
 				flag = (stmt.executeUpdate() == 1);
 			}
 			stmt.close();
+		} catch (OrderException e) {
+			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return flag;
+	}
+	public void validateOrder(int orderlistQuantity, Payment payment) throws OrderException{
+		if(orderlistQuantity <= 0)
+			throw new OrderException("수량을 입력해주세요");
+		if(payment == null)
+			throw new OrderException("결제수단을 입력해주세요");
 	}
 	
 	public Connection getConnection(){

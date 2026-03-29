@@ -104,7 +104,7 @@ public class CustomerRegisterDAO {
 		return flag;
 	}
 
-	private void validateRegister(String registerId, String name, String password, String phoneNumber) throws RegisterException {
+	public void validateRegister(String registerId, String name, String password, String phoneNumber) throws RegisterException {
 		if (registerId == null || registerId.length() == 0)
 			throw new RegisterException("아이디는 필수 입니다.");
 		if (name == null || name.length() == 0)

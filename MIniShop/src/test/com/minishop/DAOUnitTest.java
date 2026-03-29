@@ -11,7 +11,9 @@ import org.junit.Test;
 
 import com.minishop.dao.CustomerRegisterDAO;
 import com.minishop.dao.OrderDAO;
+import com.minishop.vo.CreditCard;
 import com.minishop.vo.KakaoPay;
+import com.minishop.vo.NaverPay;
 
 public class DAOUnitTest {
 	static CustomerRegisterDAO dao = null;
@@ -82,8 +84,14 @@ public class DAOUnitTest {
 		Connection conn = orderDao.getConnection();
 		conn.setAutoCommit(false);
 		//NO
+		//결제수단 미입력
+		//assertTrue(orderDao.setOrder(4, null, "gildong1", 1));
+		//수량 미입력
+		//assertTrue(orderDao.setOrder(0, new KakaoPay(), "gildong1", 1));
 		//YES
 		assertTrue(orderDao.setOrder(4, new KakaoPay(), "gildong1", 1));
+		assertTrue(orderDao.setOrder(4, new NaverPay(), "gildong1", 1));
+		assertTrue(orderDao.setOrder(4, new CreditCard(), "gildong1", 1));
 		conn.rollback();
 		conn.setAutoCommit(true);
 	}
