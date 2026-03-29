@@ -14,7 +14,7 @@ public class OrderDAO {
 	private Connection conn;
 	
 	public OrderDAO() throws SQLException, ClassNotFoundException{
-		Class.forName("oracle.jdbc.driver.OracleDriver");// ÇÙ½ÉÀº Å¬·¡½º ³×ÀÓ
+		Class.forName("oracle.jdbc.driver.OracleDriver");// í•µì‹¬ì€ í´ë˜ìŠ¤ ë„¤ì„
 		String uri = "jdbc:oracle:thin:@127.0.0.1:1521:xe";
 		conn = DriverManager.getConnection(uri, "hr", "hr");
 		System.out.println("conn ok");

@@ -4,7 +4,7 @@ public class KakaoPay implements Payment{
 	private String name;
 	
 	public KakaoPay(){
-		this.name = "Ä«Ä«¿ÀÆäÀÌ";
+		this.name = "ì¹´ì¹´ì˜¤í˜ì´";
 	}
 
 	@Override

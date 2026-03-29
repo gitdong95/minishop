@@ -4,7 +4,7 @@ public class NaverPay implements Payment {
 	private String name;
 	
 	public NaverPay(){
-		this.name = "³×ÀÌ¹öÆäÀÌ";
+		this.name = "ë„¤ì´ë²„í˜ì´";
 	}
 	@Override
 	public String pay() {
