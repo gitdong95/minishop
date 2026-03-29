@@ -40,16 +40,16 @@ public class OrderDAO {
 		}
 		return orders;
 	}
-	public boolean setOrders(int orderlistQuantity, Payment payment, String registerId, int productId){
+	public boolean setOrder(int orderlistQuantity, Payment payment, String registerId, int productId){
 		Payment pay = payment;
 		boolean flag = false;
 		
 		String sql1 = "INSERT INTO orderlist (orderlist_id, orderlist_date, orderlist_quantity, orderlist_price, orderlist_payment, register_id, product_id) "
-				+ "VALUES (orderlist_id_seq.nextval, sysdate, ?, ? * (SELECT product_price FROM products WHERE product_id = ?), ?, ?, ?);";
+				+ "VALUES (orderlist_id_seq.nextval, sysdate, ?, ? * (SELECT product_price FROM products WHERE product_id = ?), ?, ?, ?)";
 		
 		String sql2 = "UPDATE products "
 				+ "SET stock = stock - ? "
-				+ "WHERE product_id = ?;";
+				+ "WHERE product_id = ?";
 		// 검증코드 필요
 		
 		try {
@@ -72,6 +72,10 @@ public class OrderDAO {
 			e.printStackTrace();
 		}
 		return flag;
+	}
+	
+	public Connection getConnection(){
+		return conn;
 	}
 
 	public void close() {

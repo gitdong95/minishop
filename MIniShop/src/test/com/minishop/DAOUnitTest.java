@@ -11,6 +11,7 @@ import org.junit.Test;
 
 import com.minishop.dao.CustomerRegisterDAO;
 import com.minishop.dao.OrderDAO;
+import com.minishop.vo.KakaoPay;
 
 public class DAOUnitTest {
 	static CustomerRegisterDAO dao = null;
@@ -74,7 +75,17 @@ public class DAOUnitTest {
 		
 		//YES
 		assertFalse(orderDao.getOrders("gildong10").isEmpty());
-		System.out.println(orderDao.getOrders("gildong10"));
+		//System.out.println(orderDao.getOrders("gildong10"));
+	}
+	@Test
+	public void setOrderTest() throws SQLException{
+		Connection conn = orderDao.getConnection();
+		conn.setAutoCommit(false);
+		//NO
+		//YES
+		assertTrue(orderDao.setOrder(4, new KakaoPay(), "gildong1", 1));
+		conn.rollback();
+		conn.setAutoCommit(true);
 	}
 
 }
