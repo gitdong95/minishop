@@ -19,7 +19,7 @@ public class OrderDAO {
 		conn = DriverManager.getConnection(uri, "hr", "hr");
 		System.out.println("conn ok");
 	}
-	
+	// 특정회원 구매내역 조회
 	public List<OrderVO> getOrders(String registerId){
 		List<OrderVO> orders = new ArrayList<>();
 		

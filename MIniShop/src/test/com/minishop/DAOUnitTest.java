@@ -71,6 +71,7 @@ public class DAOUnitTest {
 	@Test
 	public void getOrdersTest(){
 		//NO
+		
 		//YES
 		assertFalse(orderDao.getOrders("gildong10").isEmpty());
 		System.out.println(orderDao.getOrders("gildong10"));
