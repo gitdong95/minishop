@@ -33,14 +33,14 @@ public class DAOUnitTest {
 		//NO
 //		assertTrue(dao.login("gildong1", "1234okok").equals("팔길동"));
 		//YES
-		assertTrue(dao.login("gildong1", "1234okok").equals("일길동"));
+		assertTrue(dao.login("gildong1", "pass1234").equals("홍길동"));
 	}
 	@Test
 	public void getRegisterIdTest(){
 		//NO
 		//YES
-		assertTrue(dao.getRegisterId("일길동", "01011112222") != null);
-		assertEquals(dao.getRegisterId("일길동", "01011112222"), "gildong1");
+		assertTrue(dao.getRegisterId("홍길동", "010-1111-1111") != null);
+		assertEquals(dao.getRegisterId("홍길동", "010-1111-1111"), "gildong1");
 	}
 	@Test
 	public void setPasswordTest() throws SQLException{
@@ -48,7 +48,7 @@ public class DAOUnitTest {
 		conn.setAutoCommit(false);
 		//NO
 		//YES
-		assertTrue(dao.setPassword("gildong1", "1234okok", "1234ok"));
+		assertTrue(dao.setPassword("gildong1", "pass1234", "1234okok"));
 		conn.rollback();
 		conn.setAutoCommit(true);
 	}
@@ -72,7 +72,8 @@ public class DAOUnitTest {
 	public void getOrdersTest(){
 		//NO
 		//YES
-		assertFalse(orderDao.getOrders("gildong11").isEmpty());
+		assertFalse(orderDao.getOrders("gildong10").isEmpty());
+		System.out.println(orderDao.getOrders("gildong10"));
 	}
 
 }

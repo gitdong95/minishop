@@ -20,7 +20,7 @@ public class CustomerRegisterDAO {
 	// 회원가입
 	public boolean setRegister(String registerId, String name, String password, String email, String phoneNumber){
 		boolean flag = false;
-		String sql = "INSERT INTO registers (register_id, name, password, email, phone_number) "
+		String sql = "INSERT INTO registers (register_id, register_name, password, email, phone_number) "
 				+ "VALUES (?, ?, ?, ?, ?)";
 		try {
 			validateRegister(registerId, name, password, phoneNumber);
@@ -45,7 +45,7 @@ public class CustomerRegisterDAO {
 	
 	// 로그인
 	public String login(String registerId, String password) {
-		String sql = "SELECT name "
+		String sql = "SELECT register_name "
 				+ "FROM registers "
 				+ "WHERE register_id = ? AND password = ?";
 		String name = null;
@@ -69,7 +69,7 @@ public class CustomerRegisterDAO {
 		String registerId = null;
 		String sql = "SELECT register_id "
 				+ "FROM registers "
-				+ "WHERE name = ? AND phone_number = ?";
+				+ "WHERE register_name = ? AND phone_number = ?";
 		try {
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setString(1, name);

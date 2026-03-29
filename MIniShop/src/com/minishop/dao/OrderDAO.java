@@ -23,16 +23,16 @@ public class OrderDAO {
 	public List<OrderVO> getOrders(String registerId){
 		List<OrderVO> orders = new ArrayList<>();
 		
-		String sql ="SELECT order_no, order_date, product_name, order_price "
-				+ "FROM orders "
-				+ "WHERE register_id = ?";
+		String sql = "SELECT o.orderlist_id, o.orderlist_date, p.product_name, orderlist_quantity, p.product_price, orderlist_price, orderlist_payment "
+				+ "FROM orderlist o, products p, registers r "
+				+ "WHERE r.register_id = o.register_id AND o.product_id = p.product_id AND r.register_id = ?";
 		
 		try {
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setString(1, registerId);
 			ResultSet rs = stmt.executeQuery();
 			while(rs.next()){
-				orders.add(new OrderVO(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4), registerId));
+				orders.add(new OrderVO(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getInt(5), rs.getInt(6), rs.getString(7), registerId));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
