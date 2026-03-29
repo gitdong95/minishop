@@ -12,7 +12,7 @@ public class CustomerRegisterDAO {
 	private Connection conn;
 	
 	public CustomerRegisterDAO() throws ClassNotFoundException, SQLException{
-		Class.forName("oracle.jdbc.driver.OracleDriver");// 핵심은 클래스 네임
+		Class.forName("oracle.jdbc.driver.OracleDriver");
 		String uri = "jdbc:oracle:thin:@127.0.0.1:1521:xe";
 		conn = DriverManager.getConnection(uri, "hr", "hr");
 		System.out.println("conn ok");

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.minishop.vo.OrderVO;
+import com.minishop.vo.Payment;
 
 public class OrderDAO {
 	private Connection conn;
@@ -38,6 +39,39 @@ public class OrderDAO {
 			e.printStackTrace();
 		}
 		return orders;
+	}
+	public boolean setOrders(int orderlistQuantity, Payment payment, String registerId, int productId){
+		Payment pay = payment;
+		boolean flag = false;
+		
+		String sql1 = "INSERT INTO orderlist (orderlist_id, orderlist_date, orderlist_quantity, orderlist_price, orderlist_payment, register_id, product_id) "
+				+ "VALUES (orderlist_id_seq.nextval, sysdate, ?, ? * (SELECT product_price FROM products WHERE product_id = ?), ?, ?, ?);";
+		
+		String sql2 = "UPDATE products "
+				+ "SET stock = stock - ? "
+				+ "WHERE product_id = ?;";
+		// 검증코드 필요
+		
+		try {
+			//주문완료
+			PreparedStatement stmt = conn.prepareStatement(sql1);
+			stmt.setInt(1, orderlistQuantity);
+			stmt.setInt(2, orderlistQuantity);
+			stmt.setInt(3, productId);
+			stmt.setString(4, pay.pay());
+			stmt.setString(5, registerId);
+			stmt.setInt(6, productId);
+			if (stmt.executeUpdate() == 1){
+				stmt = conn.prepareStatement(sql2);
+				stmt.setInt(1, orderlistQuantity);
+				stmt.setInt(2, productId);
+				flag = (stmt.executeUpdate() == 1);
+			}
+			stmt.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return flag;
 	}
 
 	public void close() {
