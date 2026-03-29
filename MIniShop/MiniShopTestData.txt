@@ -1,0 +1,69 @@
+-- 회원정보 (registers)
+INSERT INTO registers (register_id, register_name, password, email, phone_number)
+VALUES ('gildong1', '홍길동', 'pass1234', 'gildong1@email.com', '010-1111-1111');
+INSERT INTO registers (register_id, register_name, password, email, phone_number)
+VALUES ('gildong2', '김철수', 'pass1234', 'gildong2@email.com', '010-2222-2222');
+INSERT INTO registers (register_id, register_name, password, email, phone_number)
+VALUES ('gildong3', '이영희', 'pass1234', 'gildong3@email.com', '010-3333-3333');
+INSERT INTO registers (register_id, register_name, password, email, phone_number)
+VALUES ('gildong4', '박민준', 'pass1234', 'gildong4@email.com', '010-4444-4444');
+INSERT INTO registers (register_id, register_name, password, email, phone_number)
+VALUES ('gildong5', '최지우', 'pass1234', 'gildong5@email.com', '010-5555-5555');
+INSERT INTO registers (register_id, register_name, password, email, phone_number)
+VALUES ('gildong6', '정수연', 'pass1234', 'gildong6@email.com', '010-6666-6666');
+INSERT INTO registers (register_id, register_name, password, email, phone_number)
+VALUES ('gildong7', '강동원', 'pass1234', 'gildong7@email.com', '010-7777-7777');
+INSERT INTO registers (register_id, register_name, password, email, phone_number)
+VALUES ('gildong8', '윤서연', 'pass1234', 'gildong8@email.com', '010-8888-8888');
+INSERT INTO registers (register_id, register_name, password, email, phone_number)
+VALUES ('gildong9', '임재현', 'pass1234', 'gildong9@email.com', '010-9999-9999');
+INSERT INTO registers (register_id, register_name, password, email, phone_number)
+VALUES ('gildong10', '한소희', 'pass1234', 'gildong10@email.com', '010-1010-1010');
+
+-- 상품정보 (products)
+CREATE SEQUENCE product_id_seq;
+INSERT INTO products (product_id, product_name, product_price, stock)
+VALUES (product_id_seq.NEXTVAL, '아메리카노', 2000, 100);
+INSERT INTO products (product_id, product_name, product_price, stock)
+VALUES (product_id_seq.NEXTVAL, '카페라떼', 2500, 80);
+INSERT INTO products (product_id, product_name, product_price, stock)
+VALUES (product_id_seq.NEXTVAL, '삼각김밥', 1200, 200);
+INSERT INTO products (product_id, product_name, product_price, stock)
+VALUES (product_id_seq.NEXTVAL, '도시락', 4500, 50);
+INSERT INTO products (product_id, product_name, product_price, stock)
+VALUES (product_id_seq.NEXTVAL, '에너지드링크', 2000, 150);
+INSERT INTO products (product_id, product_name, product_price, stock)
+VALUES (product_id_seq.NEXTVAL, '샌드위치', 3500, 60);
+INSERT INTO products (product_id, product_name, product_price, stock)
+VALUES (product_id_seq.NEXTVAL, '우유', 1300, 120);
+INSERT INTO products (product_id, product_name, product_price, stock)
+VALUES (product_id_seq.NEXTVAL, '콜라', 1500, 180);
+INSERT INTO products (product_id, product_name, product_price, stock)
+VALUES (product_id_seq.NEXTVAL, '과자', 1800, 90);
+INSERT INTO products (product_id, product_name, product_price, stock)
+VALUES (product_id_seq.NEXTVAL, '빵', 2500, 70);
+
+-- 회원전용_구매내역 (orderlist)
+CREATE SEQUENCE orderlist_id_seq;
+INSERT INTO orderlist (orderlist_id, orderlist_date, orderlist_quantity, orderlist_price, orderlist_payment, register_id, product_id)
+VALUES (orderlist_id_seq.NEXTVAL, '2026-03-01', 2, 4000, '카카오페이', 'gildong1', 1);
+INSERT INTO orderlist (orderlist_id, orderlist_date, orderlist_quantity, orderlist_price, orderlist_payment, register_id, product_id)
+VALUES (orderlist_id_seq.NEXTVAL, '2026-03-02', 1, 2500, '네이버페이', 'gildong2', 2);
+INSERT INTO orderlist (orderlist_id, orderlist_date, orderlist_quantity, orderlist_price, orderlist_payment, register_id, product_id)
+VALUES (orderlist_id_seq.NEXTVAL, '2026-03-03', 3, 3600, '카카오페이', 'gildong3', 3);
+INSERT INTO orderlist (orderlist_id, orderlist_date, orderlist_quantity, orderlist_price, orderlist_payment, register_id, product_id)
+VALUES (orderlist_id_seq.NEXTVAL, '2026-03-05', 1, 4500, '신용카드', 'gildong4', 4);
+INSERT INTO orderlist (orderlist_id, orderlist_date, orderlist_quantity, orderlist_price, orderlist_payment, register_id, product_id)
+VALUES (orderlist_id_seq.NEXTVAL, '2026-03-07', 2, 4000, '신용카드', 'gildong5', 5);
+INSERT INTO orderlist (orderlist_id, orderlist_date, orderlist_quantity, orderlist_price, orderlist_payment, register_id, product_id)
+VALUES (orderlist_id_seq.NEXTVAL, '2026-03-10', 1, 3500, '카카오페이', 'gildong6', 6);
+INSERT INTO orderlist (orderlist_id, orderlist_date, orderlist_quantity, orderlist_price, orderlist_payment, register_id, product_id)
+VALUES (orderlist_id_seq.NEXTVAL, '2026-03-12', 2, 2600, '네이버페이', 'gildong7', 7);
+INSERT INTO orderlist (orderlist_id, orderlist_date, orderlist_quantity, orderlist_price, orderlist_payment, register_id, product_id)
+VALUES (orderlist_id_seq.NEXTVAL, '2026-03-15', 3, 4500, '신용카드', 'gildong8', 8);
+INSERT INTO orderlist (orderlist_id, orderlist_date, orderlist_quantity, orderlist_price, orderlist_payment, register_id, product_id)
+VALUES (orderlist_id_seq.NEXTVAL, '2026-03-20', 1, 1800, '카카오페이', 'gildong9', 9);
+INSERT INTO orderlist (orderlist_id, orderlist_date, orderlist_quantity, orderlist_price, orderlist_payment, register_id, product_id)
+VALUES (orderlist_id_seq.NEXTVAL, '2026-03-25', 2, 5000, '네이버페이', 'gildong10', 10);
+
+COMMIT;
